@@ -1,0 +1,26 @@
+language: haskell
+sudo: false
+cache:
+  directories:
+  - $HOME/.stack/
+before_install:
+- mkdir -p ~/.local/bin
+- export PATH=$HOME/.local/bin:$PATH
+- travis_retry curl -L https://github.com/commercialhaskell/stack/releases/download/v0.1.10.1/stack-0.1.10.1-linux-x86_64.tar.gz
+  | gunzip > ~/.local/bin/stack
+- chmod a+x ~/.local/bin/stack
+- stack --no-terminal setup
+install:
+- stack setup --no-terminal
+- stack build --only-snapshot --no-terminal
+script:
+- stack build --pedantic --no-terminal
+deploy:
+  matrix:
+  - provider: hackage
+    username: AlexanderThiemann
+    skip_cleanup: true
+    on:
+      tags: true
+  password:
+    secure: mQM6HWJOA3dJTWTWIZvh57TjNIjiAhNRhD6Ws+uhlBKmAsh3F+y5YoAi4Et6HAYpXfvQnUkIFj9+qB5HF6Dt8Z2aBotx/gFSvQtZBK3UnBv+K61V0kEXmPOygK2Kh3aPlwXKliVZ/TVIidPOtGs0iT+pyZtuvml71ZR6sB5vHXO2WbK44Ag86kUYwp6CJQRQzqm41mwqcdWQKCJ48g2b+NjRVzR0rfELe5Kt0W9lmAavdSwqL+icYTzOKEFoxAm8i0kQrlHhqKMDItqfDM3FkiB9zUmf/Ff7jqJS9tLR6F74L61nkyakEQznXeVsF9ixPqwXSSNgLbBUKZjXGdIlvGcsfcqfLrWeUrZmvxglXH3SVTuCWhPfIqLH+G6HQvBIeoELdaQMJaOHoD8LE6IWD55bHcaSdsxycazzcQoVGhYk4osb4ziWvbp5FOYSeWARomYvWFcJ3/NWDGcm2krLHj1Y/whaTXL9eroYGXDLG7C9lHtOc7wLo0Yx+MbMWKxZ4GGYzIwhSj2CQIAsM3xvqsXNiZs4rsyHypquHABX43T7lSmmoWfCKwsSp3iqN6DJ3OND1z0sgcOKCfxne9Bz2a29UTxWUZCDhmHqg0WxZRZVkcqH6dGMEPBcQWDoMcP9wKfp+n4LlGpBWrXmf6Mpjh3toyU6eK5zMM54sqVkjZc=
