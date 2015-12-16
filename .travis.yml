@@ -1,4 +1,8 @@
-language: haskell
+language: c
+addons:
+  apt:
+    packages:
+    - libgmp-dev
 sudo: false
 cache:
   directories:
@@ -6,8 +10,7 @@ cache:
 before_install:
 - mkdir -p ~/.local/bin
 - export PATH=$HOME/.local/bin:$PATH
-- travis_retry curl -L https://github.com/commercialhaskell/stack/releases/download/v0.1.10.1/stack-0.1.10.1-linux-x86_64.tar.gz
-  | gunzip > ~/.local/bin/stack
+- travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 - chmod a+x ~/.local/bin/stack
 - stack --no-terminal setup
 install:
