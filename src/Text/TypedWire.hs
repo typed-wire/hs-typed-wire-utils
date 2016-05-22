@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Text.TypedWire
@@ -37,6 +38,9 @@ instance FromJSON AsBase64 where
 eatBool :: Bool -> Parser ()
 eatBool _ = return ()
 
+#if MIN_VERSION_aeson(0,11,0)
+#else
+
 -- Hacky until next aeson version includes TimeOfDay
 instance ToJSON TimeOfDay where
     toJSON tod =
@@ -49,3 +53,5 @@ instance FromJSON TimeOfDay where
         case parseTimeM True defaultTimeLocale "%H:%M:%S" (T.unpack t) of
           Nothing -> fail "Invalid time of day"
           Just tod -> return tod
+
+#endif
