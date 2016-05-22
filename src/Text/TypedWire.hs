@@ -10,10 +10,13 @@ where
 
 import Data.Aeson
 import Data.Aeson.Types
+#if MIN_VERSION_aeson(0,11,0)
+#else
 import Data.Time
+import qualified Data.Text as T
+#endif
 import qualified Data.ByteString as BS
 import qualified Data.ByteString.Base64 as B64
-import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 
 -- | Usual bytestrings, but with base64 aeson repr
